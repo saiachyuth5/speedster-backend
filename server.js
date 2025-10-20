@@ -41,14 +41,14 @@ app.post('/api/strava/connect', authMiddleware, async (req, res) => {
     const { data: profile, error: upsertError } = await supabase
       .from('user_profiles')
       .upsert({
-        user_id: userId,
-        strava_id: athlete.id,
+        id: req.user.id,
+        strava_id: athlete.id.toString(),
         strava_access_token: access_token,
         strava_refresh_token: refresh_token,
         strava_token_expires_at: new Date(expires_at * 1000).toISOString(),
         updated_at: new Date().toISOString()
       }, {
-        onConflict: 'user_id',
+        onConflict: 'id',  // Changed from user_id to id
         returning: true
       });
 
@@ -88,7 +88,7 @@ app.get('/api/strava/activities', authMiddleware, async (req, res) => {
     const { data: profile, error: profileError } = await supabase
       .from('user_profiles')
       .select('strava_access_token, strava_token_expires_at')
-      .eq('user_id', userId)
+      .eq('id', userId)  // Changed from user_id to id
       .single();
     
     if (profileError || !profile) {
@@ -116,12 +116,12 @@ app.get('/api/strava/activities', authMiddleware, async (req, res) => {
       strava_activity_id: run.id.toString(),
       name: run.name,
       date: new Date(run.start_date).toISOString(),
-      distance: run.distance,
+      distance: Math.round(run.distance || 0),
       duration: run.moving_time,
       pace: ((run.moving_time / 60) / (run.distance / 1000)).toFixed(2),
-      avg_hr: run.average_heartrate,
-      cadence: run.average_cadence,
-      elevation: run.total_elevation_gain,
+      avg_heart_rate: Math.round(run.average_heartrate || 0),
+      cadence: Math.round(run.average_cadence || 0),
+      elevation_gain: Math.round(run.total_elevation_gain || 0),
       updated_at: new Date().toISOString()
     }));
     
@@ -149,9 +149,9 @@ app.get('/api/strava/activities', authMiddleware, async (req, res) => {
         distance,
         duration,
         pace,
-        avg_hr,
+        avg_heart_rate,
         cadence,
-        elevation,
+        elevation_gain,
         run_analyses(id)
       `)
       .eq('user_id', userId)
@@ -171,9 +171,9 @@ app.get('/api/strava/activities', authMiddleware, async (req, res) => {
       distance: run.distance,
       duration: run.duration,
       pace: run.pace,
-      avgHR: run.avg_hr,
+      avg_heart_rate: run.avg_heart_rate,
       cadence: run.cadence,
-      elevation: run.elevation,
+      elevation_gain: run.elevation_gain,
       analyzed: run.run_analyses.length > 0
     }));
     
@@ -203,9 +203,9 @@ app.post('/api/analyze-run', authMiddleware, async (req, res) => {
 Distance: ${(runData.distance / 1000).toFixed(1)} km
 Duration: ${Math.floor(runData.duration / 60)}:${String(runData.duration % 60).padStart(2, '0')}
 Pace: ${runData.pace} min/km
-Average Heart Rate: ${runData.avgHR || 'N/A'} bpm
+Average Heart Rate: ${runData.avg_heart_rate || 'N/A'} bpm
 Cadence: ${runData.cadence || 'N/A'} spm
-Elevation Gain: ${Math.round(runData.elevation || 0)}m
+Elevation Gain: ${Math.round(runData.elevation_gain || 0)}m
 
 Provide a JSON response with:
 1. "summary": A brief 2-3 sentence summary of the run quality and performance
