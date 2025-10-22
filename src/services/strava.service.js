@@ -69,7 +69,9 @@ class StravaService {
       date: new Date(activity.start_date).toISOString(),
       distance: Math.round(activity.distance || 0),
       duration: activity.moving_time,
-      pace: ((activity.moving_time / 60) / (activity.distance / 1000)).toFixed(2),
+      pace: (activity.distance > 0
+        ? ((activity.moving_time / 60) / (activity.distance / 1000)).toFixed(2)
+        : null),
       avg_heart_rate: Math.round(activity.average_heartrate || 0),
       cadence: activity.average_cadence ? Math.round(activity.average_cadence * 2) : null,
       elevation_gain: Math.round(activity.total_elevation_gain || 0),
