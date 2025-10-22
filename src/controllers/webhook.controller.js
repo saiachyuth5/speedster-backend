@@ -84,10 +84,10 @@ class WebhookController {
         step5: 'Callback URL should be: https://your-domain.com/webhook/strava'
       },
       curl_command: `curl -X POST https://www.strava.com/api/v3/push_subscriptions \\
-  -F client_id=${config.STRAVA_CLIENT_ID} \\
-  -F client_secret=${config.STRAVA_CLIENT_SECRET} \\
+  -F client_id=<YOUR_CLIENT_ID> \\
+  -F client_secret=<YOUR_CLIENT_SECRET> \\
   -F 'callback_url=https://YOUR_DOMAIN/webhook/strava' \\
-  -F 'verify_token=${config.STRAVA_WEBHOOK_VERIFY_TOKEN}'`
+  -F 'verify_token=<YOUR_VERIFY_TOKEN>'`
     });
   }
 }
