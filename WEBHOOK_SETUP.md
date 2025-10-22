@@ -48,8 +48,8 @@ STRAVA_WEBHOOK_VERIFY_TOKEN=speedster_webhook_secret_2025
 
 ```bash
 curl -X POST https://www.strava.com/api/v3/push_subscriptions \
-  -F client_id=180190 \
-  -F client_secret=7060ca4b3a8d1250d0dde8dd649b92d5e6998be6 \
+  -F client_id=YOUR_CLIENT_ID \
+  -F client_secret=YOUR_CLIENT_SECRET \
   -F 'callback_url=https://YOUR_NGROK_URL.ngrok.io/webhook/strava' \
   -F 'verify_token=speedster_webhook_secret_2025'
 ```
