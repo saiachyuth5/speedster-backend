@@ -47,8 +47,8 @@ class WebhookService {
     }
 
     // Check if run exists
-    const { data: existingRun } = await databaseService.getUserRuns(profile.id);
-    const run = existingRun?.find(r => r.strava_activity_id === activityId.toString());
+    const existingRuns = await databaseService.getUserRuns(profile.id);
+    const run = existingRuns?.find(r => r.strava_activity_id === activityId.toString());
 
     if (!run) {
       console.log(`ℹ️ Activity ${activityId} not in database, treating as create`);
