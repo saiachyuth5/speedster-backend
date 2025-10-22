@@ -1,12 +1,14 @@
 {
   "name": "speedster-backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "2.0.0",
+  "description": "Production-grade backend for Speedster running analytics app",
+  "main": "src/index.js",
   "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ["running", "strava", "ai", "coaching"],
   "author": "",
   "license": "ISC",
   "dependencies": {
