@@ -1,5 +1,3 @@
-# Speedster Backend - Production Grade 🚀
-
 AI-powered running analytics backend with Strava integration, real-time webhooks, and GPT-4 coaching.
 
 ## 🏗️ Architecture
