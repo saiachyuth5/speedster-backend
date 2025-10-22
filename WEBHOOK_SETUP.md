@@ -48,20 +48,20 @@ STRAVA_WEBHOOK_VERIFY_TOKEN=speedster_webhook_secret_2025
 
 ```bash
 curl -X POST https://www.strava.com/api/v3/push_subscriptions \
-  -F client_id=180190 \
-  -F client_secret=7060ca4b3a8d1250d0dde8dd649b92d5e6998be6 \
+  -F client_id=YOUR_STRAVA_CLIENT_ID \
+  -F client_secret=YOUR_STRAVA_CLIENT_SECRET \
   -F 'callback_url=https://YOUR_NGROK_URL.ngrok.io/webhook/strava' \
   -F 'verify_token=speedster_webhook_secret_2025'
 ```
 
-**Important:** Replace `YOUR_NGROK_URL` with your actual ngrok URL!
+**Important:** Replace `YOUR_STRAVA_CLIENT_ID`, `YOUR_STRAVA_CLIENT_SECRET`, and `YOUR_NGROK_URL` with your actual values!
 
 ### Expected Response
 ```json
 {
   "id": 12345,
   "resource_state": 2,
-  "application_id": 180190,
+  "application_id": YOUR_STRAVA_CLIENT_ID,
   "callback_url": "https://YOUR_NGROK_URL.ngrok.io/webhook/strava",
   "created_at": "2025-10-21T...",
   "updated_at": "2025-10-21T..."
@@ -73,8 +73,8 @@ curl -X POST https://www.strava.com/api/v3/push_subscriptions \
 ### Check Current Subscriptions
 ```bash
 curl -G https://www.strava.com/api/v3/push_subscriptions \
-  -d client_id=180190 \
-  -d client_secret=7060ca4b3a8d1250d0dde8dd649b92d5e6998be6
+  -d client_id=YOUR_STRAVA_CLIENT_ID \
+  -d client_secret=YOUR_STRAVA_CLIENT_SECRET
 ```
 
 ### Test the Webhook
@@ -87,8 +87,8 @@ curl -G https://www.strava.com/api/v3/push_subscriptions \
 
 ```bash
 curl -X DELETE https://www.strava.com/api/v3/push_subscriptions/SUBSCRIPTION_ID \
-  -F client_id=180190 \
-  -F client_secret=7060ca4b3a8d1250d0dde8dd649b92d5e6998be6
+  -F client_id=YOUR_STRAVA_CLIENT_ID \
+  -F client_secret=YOUR_STRAVA_CLIENT_SECRET
 ```
 
 ## How It Works
@@ -105,7 +105,7 @@ When an activity is created/updated/deleted, Strava sends:
   "object_type": "activity",
   "object_id": 12345678,
   "aspect_type": "create",
-  "owner_id": 180892540,
+  "owner_id": YOUR_STRAVA_ATHLETE_ID,
   "subscription_id": 12345,
   "event_time": 1234567890
 }
